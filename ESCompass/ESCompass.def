@@ -1,0 +1,5 @@
+LIBRARY ESCompass
+
+EXPORTS
+	EuroScopePlugInInit
+	EuroScopePlugInExit
