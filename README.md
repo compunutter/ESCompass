@@ -35,16 +35,8 @@ EuroScope is 32-bit. Build **Release | Win32** and load `bin\Win32\Release\ESCom
 
 ## Build
 
-Requires Visual Studio 2022 or 2026 with the C++ desktop workload. The project uses that install's own platform toolset (v143 or v145), not the old VS2019 v142 tools. You also need the EuroScope plugin SDK that ships with EuroScope:
+Requires Visual Studio 2022 or 2026 with the C++ desktop workload. The project uses that install's own platform toolset (v143 or v145), not the old VS2019 v142 tools.
 
-`C:\Program Files (x86)\EuroScope\PlugInEnvironment`
-
-That folder must contain `EuroScopePlugIn.h` and `EuroScopePlugInDll.lib`. The project also searches `P:\Program Files (x86)\EuroScope\PlugInEnvironment`, which is what vParkAir used.
-
-If the SDK lives somewhere else, edit `EuroScopeSdk` in [ESCompass/ESCompass.vcxproj](ESCompass/ESCompass.vcxproj), or build with:
-
-```
-msbuild ESCompass.sln /p:Configuration=Release /p:Platform=Win32 /p:EuroScopeSdk="D:\path\PlugInEnvironment"
-```
+The EuroScope plugin header and import library are already in [ESCompass/sdk](ESCompass/sdk). You do not need a separate SDK install. EuroScope itself stopped shipping those files next to the program.
 
 Open [ESCompass.sln](ESCompass.sln), choose **Release** and **Win32**, and build. Do not build x64: EuroScope will not load it.
