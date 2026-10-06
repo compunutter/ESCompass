@@ -7,7 +7,7 @@
 static ULONG_PTR g_GdiplusToken = 0;
 static CESCompassPlugin* g_Plugin = NULL;
 
-extern "C" __declspec(dllexport) void EuroScopePlugInInit(EuroScopePlugIn::CPlugIn** ppPlugInInstance)
+void __declspec(dllexport) EuroScopePlugInInit(EuroScopePlugIn::CPlugIn** ppPlugInInstance)
 {
 	if (g_GdiplusToken == 0)
 	{
@@ -20,7 +20,7 @@ extern "C" __declspec(dllexport) void EuroScopePlugInInit(EuroScopePlugIn::CPlug
 	*ppPlugInInstance = g_Plugin;
 }
 
-extern "C" __declspec(dllexport) void EuroScopePlugInExit(void)
+void __declspec(dllexport) EuroScopePlugInExit(void)
 {
 	delete g_Plugin;
 	g_Plugin = NULL;

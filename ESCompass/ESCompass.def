@@ -1,5 +1,6 @@
 LIBRARY ESCompass
 
 EXPORTS
-	EuroScopePlugInInit
-	EuroScopePlugInExit
+	EuroScopePlugInInit=?EuroScopePlugInInit@@YAXPAPAVCPlugIn@EuroScopePlugIn@@@Z
+	EuroScopePlugInExit=?EuroScopePlugInExit@@YAXXZ
+
