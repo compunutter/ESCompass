@@ -28,9 +28,10 @@ public:
 
 	bool Rose() const { return m_Rose; }
 	bool Square() const { return m_Square; }
+	int TopInset() const { return m_TopInset; }
 
 	void UnregisterScreen(CESCompassScreen* screen);
-	void ApplyAsr(const char* rose, const char* square);
+	void ApplyAsr(const char* rose, const char* square, const char* top);
 
 private:
 	void Publish();
@@ -38,6 +39,7 @@ private:
 
 	bool m_Rose;
 	bool m_Square;
+	int m_TopInset;
 	bool m_HaveState;
 	std::vector<CESCompassScreen*> m_Screens;
 };

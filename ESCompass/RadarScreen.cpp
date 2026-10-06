@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <string>
 
 namespace
 {
@@ -102,8 +103,9 @@ void CESCompassScreen::OnAsrContentLoaded(bool Loaded)
 	(void)Loaded;
 	const char* rose = GetDataFromAsr("ESCompassRose");
 	const char* square = GetDataFromAsr("ESCompassSquare");
+	const char* top = GetDataFromAsr("ESCompassTop");
 	if (m_Plugin != NULL)
-		m_Plugin->ApplyAsr(rose, square);
+		m_Plugin->ApplyAsr(rose, square, top);
 }
 
 void CESCompassScreen::OnAsrContentToBeSaved(void)
@@ -129,6 +131,12 @@ void CESCompassScreen::Persist()
 		"ESCompassSquare",
 		"ESCompass square compass",
 		m_Plugin->Square() ? "1" : "0");
+
+	const std::string top = std::to_string(m_Plugin->TopInset());
+	SaveDataToAsr(
+		"ESCompassTop",
+		"ESCompass top clearance",
+		top.c_str());
 }
 
 RECT CESCompassScreen::DrawableRadarArea()
@@ -171,6 +179,20 @@ RECT CESCompassScreen::DrawableRadarArea()
 	const int clippedHeight = radar.bottom - radar.top;
 	if (originalHeight > 0 && clippedHeight * 3 < originalHeight)
 		return original;
+
+	// TopSky draws its global menu over the top of the radar after other
+	// plugins, and does not report that strip as a toolbar. Keep both
+	// compasses below it. .cmptop changes the depth.
+	if (m_Plugin != NULL)
+	{
+		int inset = m_Plugin->TopInset();
+		if (inset < 0)
+			inset = 0;
+		if (inset > 400)
+			inset = 400;
+		if (inset > 0 && radar.bottom - radar.top > inset + 40)
+			radar.top += inset;
+	}
 
 	return radar;
 }

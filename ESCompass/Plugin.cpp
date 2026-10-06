@@ -51,17 +51,48 @@ bool ParseToggle(const std::string& line, const char* command, std::string& argu
 	return true;
 }
 
+// A missing or junk ASR value must not become zero, or a saved screen
+// would cancel the default TopSky clearance.
+int ParseStoredInset(const char* text)
+{
+	if (text == NULL || text[0] == '\0')
+		return -1;
+
+	int value = 0;
+	for (const char* cursor = text; *cursor != '\0'; ++cursor)
+	{
+		if (*cursor < '0' || *cursor > '9')
+			return -1;
+		value = value * 10 + (*cursor - '0');
+		if (value > 400)
+			return -1;
+	}
+	return value;
+}
+
+bool ParseInsetArgument(const std::string& argument, int& value)
+{
+	if (argument == "off")
+	{
+		value = 0;
+		return true;
+	}
+	value = ParseStoredInset(argument.c_str());
+	return value >= 0;
+}
+
 } // namespace
 
 CESCompassPlugin::CESCompassPlugin()
 	: EuroScopePlugIn::CPlugIn(
 		EuroScopePlugIn::COMPATIBILITY_CODE,
 		"ESCompass",
-		"1.0.0",
+		"1.1.0",
 		"George Complin",
 		"Copyright (C) 2026 George Complin")
 	, m_Rose(false)
 	, m_Square(false)
+	, m_TopInset(20)
 	, m_HaveState(false)
 {
 }
@@ -111,6 +142,33 @@ bool CESCompassPlugin::OnCompileCommand(const char* sCommandLine)
 		flag = &m_Square;
 		label = "Square compass";
 	}
+	else if (ParseToggle(line, ".cmptop", argument) || ParseToggle(line, "cmptop", argument))
+	{
+		int inset = 0;
+		if (argument.empty())
+		{
+			std::string message = "Top clearance ";
+			message += std::to_string(m_TopInset);
+			message += " px";
+			Tell(message.c_str());
+			return true;
+		}
+		if (!ParseInsetArgument(argument, inset))
+		{
+			Tell("Usage: .cmptop <pixels>   (0 draws to the top edge)");
+			return true;
+		}
+
+		m_TopInset = inset;
+		m_HaveState = true;
+		Publish();
+
+		std::string message = "Top clearance ";
+		message += std::to_string(m_TopInset);
+		message += " px";
+		Tell(message.c_str());
+		return true;
+	}
 	else
 	{
 		return false;
@@ -149,17 +207,23 @@ void CESCompassPlugin::UnregisterScreen(CESCompassScreen* screen)
 	}
 }
 
-void CESCompassPlugin::ApplyAsr(const char* rose, const char* square)
+void CESCompassPlugin::ApplyAsr(const char* rose, const char* square, const char* top)
 {
 	if (m_HaveState)
 		return;
-	if ((rose == NULL || rose[0] == '\0') && (square == NULL || square[0] == '\0'))
+
+	const bool haveRose = rose != NULL && rose[0] != '\0';
+	const bool haveSquare = square != NULL && square[0] != '\0';
+	const int inset = ParseStoredInset(top);
+	if (!haveRose && !haveSquare && inset < 0)
 		return;
 
-	if (rose != NULL && rose[0] != '\0')
+	if (haveRose)
 		m_Rose = rose[0] == '1';
-	if (square != NULL && square[0] != '\0')
+	if (haveSquare)
 		m_Square = square[0] == '1';
+	if (inset >= 0)
+		m_TopInset = inset;
 	m_HaveState = true;
 }
 

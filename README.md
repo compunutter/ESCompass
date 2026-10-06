@@ -12,6 +12,9 @@ Bearings are true north on the picture, so both compasses turn when the scope is
 | `.cmprose on` / `.cmprose off` | Force the rose on or off |
 | `.cmpsquare` | Toggle the square compass around the radar edge |
 | `.cmpsquare on` / `.cmpsquare off` | Force the square compass on or off |
+| `.cmptop` | Show the reserved strip at the top, in pixels |
+| `.cmptop 20` | Keep both compasses this many pixels below the top of the radar |
+| `.cmptop 0` | Draw up to the top edge again |
 
 Each command is acknowledged in the `ESCompass` chat tab. The choice is stored in the ASR.
 
@@ -23,7 +26,9 @@ The rose is a true circle on the centre of the radar area. Ticks are every degre
 
 The square compass puts each bearing where that true-bearing ray meets the edge of the radar area. Tick spacing follows the angle from the centre, so it stays right on a wide, square or rotated scope. vParkAir instead split the border into fixed ranges (56°, 125°, 236°, 305°), which only approximated one window shape and mirrored the left-hand labels.
 
-Chat and the toolbar are left outside the frame when EuroScope reports them overlapping the radar area.
+Chat and the EuroScope toolbar are left outside the frame when EuroScope reports them overlapping the radar area.
+
+TopSky's global menu is not one of those areas. It is painted on the radar afterwards, so a compass drawn underneath it is covered. Both compasses are fitted below a 20 pixel strip, which clears the one-line menu in the UK pack. If a taller menu still covers the arc, raise it with `.cmptop`. Docked lists, such as Sector Inbound, are separate windows and will still cover anything under them.
 
 ## Install
 
