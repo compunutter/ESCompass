@@ -4,6 +4,16 @@ EuroScope overlay that draws two geographic compasses on the normal radar screen
 
 Bearings are true north on the picture, so both compasses turn when the scope is rotated. They match ground track on the map. They are not magnetic: a magnetic heading differs from the compass by the sectorfile variation.
 
+## Screenshots
+
+Compass rose, `.cmprose`, on Heathrow Radar:
+
+![Compass rose centred on the radar](ESCompass_Rose.png)
+
+Square compass, `.cmpsquare`, on the same screen:
+
+![Square compass around the radar edge](ESCompass_Square.png)
+
 ## Commands
 
 | Command | Effect |
@@ -32,7 +42,7 @@ TopSky's global menu is not one of those areas. It is painted on the radar after
 
 ## Install
 
-EuroScope is 32-bit. Build **Release | Win32** and load `bin\Win32\Release\ESCompass.dll`.
+EuroScope is 32-bit. A built DLL is attached to the [v1.1.0 release](https://github.com/compunutter/ESCompass/releases/tag/v1.1.0). To build it yourself, use **Release | Win32** and load `bin\Win32\Release\ESCompass.dll`.
 
 1. Other SET → Plug-ins → Load, and select `ESCompass.dll`.
 2. Select **ESCompass** and move **Standard ES radar screen** (and any other scope you use) from *Forbidden to draw on types* to *Allowed to draw on types*.
