@@ -35,7 +35,7 @@ EuroScope is 32-bit. Build **Release | Win32** and load `bin\Win32\Release\ESCom
 
 ## Build
 
-Requires Visual Studio 2019 or 2022 with the **v142** toolset, and the EuroScope plugin SDK that ships with EuroScope:
+Requires Visual Studio 2022 or 2026 with the C++ desktop workload. The project uses that install's own platform toolset (v143 or v145), not the old VS2019 v142 tools. You also need the EuroScope plugin SDK that ships with EuroScope:
 
 `C:\Program Files (x86)\EuroScope\PlugInEnvironment`
 
